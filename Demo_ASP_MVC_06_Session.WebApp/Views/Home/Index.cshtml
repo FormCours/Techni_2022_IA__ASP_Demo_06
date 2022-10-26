@@ -1,8 +1,23 @@
-﻿@{
+﻿@using Demo_ASP_MVC_06_Session.WebApp.Services
+@* ↑ Import de namespace pour le service de session *@
+
+@inject SessionService sessionService
+@* ↑ Injection du SessionService *@
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Demo Session</h1>
+    
+    @* ↓ Utilisation du session service *@
+    @if(sessionService.IsConnected) {
+        <a class="btn btn-danger" asp-controller="Auth" asp-action="Logout">Se déconnecter</a>
+    }
+    else {
+        <a class="btn btn-success" asp-controller="Auth" asp-action="Login">Connection</a>
+        <a class="btn btn-warning" asp-controller="Auth" asp-action="Register">Créer un compte</a>
+    }
+
 </div>

@@ -30,7 +30,7 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
 
             command.AddParam("@Email", entity.Email);
             command.AddParam("@Pseudo", entity.Pseudo);
-            DbUtils.AddParam(command, "@Pwd_Hash", entity.Password);
+            DbUtils.AddParam(command, "@Pwd_Hash", entity.HashPwd);
  
             _connection.Open();
             int? id = (int?)command.ExecuteScalar();
@@ -138,7 +138,7 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
 
         public string? GetHashPwd(string identifiant)
         {
-            string cmd = "SELECT HashPwd" +
+            string cmd = "SELECT [Pwd_Hash]" +
                 " FROM [Member]" +
                 " WHERE [Pseudo] = @identifiant OR [Email] = @identifiant";
 

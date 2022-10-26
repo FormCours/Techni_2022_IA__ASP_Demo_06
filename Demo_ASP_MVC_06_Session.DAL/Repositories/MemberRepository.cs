@@ -96,12 +96,17 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
             }
             return member;
         }
-
-        public Member? GetByPseudo(string pseudo)
+        public Member? GetByIdentifiant(string identifiant)
         {
-            string cmd = "SELECT * FROM [Member] WHERE [Pseudo] = @pseudo";
+            return GetByIdentifiant(identifiant, identifiant);
+        }
+        public Member? GetByIdentifiant(string pseudo, string email)
+        {
+            string cmd = "SELECT * FROM [Member] WHERE " +
+                "([Pseudo] = @Pseudo OR [Email] = @Email)";
             IDbCommand command = _connection.CreateQueryCommand(cmd);
-            command.AddParam("@pseudo", pseudo);
+            command.AddParam("@Pseudo", pseudo);
+            command.AddParam("@Email", email);
 
             int cpt = 0;
             Member? member = null;
@@ -124,9 +129,28 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
             return member;
         }
 
+        
+
         public override bool Update(int id, Member entity)
         {
             throw new NotImplementedException();
+        }
+
+        public string? GetHashPwd(string identifiant)
+        {
+            string cmd = "SELECT HashPwd" +
+                " FROM [Member]" +
+                " WHERE [Pseudo] = @identifiant OR [Email] = @identifiant";
+
+            IDbCommand command = _connection.CreateQueryCommand(cmd);
+
+            command.AddParam("@identifiant", identifiant);
+
+            _connection.Open();
+            string? hashPwd = (string?)command.ExecuteScalar();
+            _connection.Close();
+
+            return hashPwd;
         }
     }
 }

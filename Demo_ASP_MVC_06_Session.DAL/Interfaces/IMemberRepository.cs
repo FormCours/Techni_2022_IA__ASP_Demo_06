@@ -9,6 +9,11 @@ namespace Demo_ASP_MVC_06_Session.DAL.Interfaces
 {
     public interface IMemberRepository : IRepositoryBase<int, Member>
     {
-        Member? GetByPseudo(string pseudo);
+        Member? GetByIdentifiant(string identifiant);
+
+        Member? GetByIdentifiant(string pseudo, string email);
+
+        string? GetHashPwd(string identifiant);
+        
     }
 }

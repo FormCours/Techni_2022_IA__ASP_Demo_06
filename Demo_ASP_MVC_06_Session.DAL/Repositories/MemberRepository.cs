@@ -5,12 +5,11 @@ using System.Data;
 
 namespace Demo_ASP_MVC_06_Session.DAL.Repositories
 {
-    public class MemberRepository : RepositoryBase<int, Member>
-    , IMember
+    public class MemberRepository : RepositoryBase<int, Member>, IMemberRepository
     {
         public MemberRepository(IDbConnection connection) : base(connection)
-        {
-        }
+        { }
+
         protected override Member Mapper(IDataRecord record)
         {
             return new Member()
@@ -20,6 +19,7 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
                 Email = (string)record["Email"]
             };
         }
+
         public override int Add(Member entity)
         {
             // "༼ つ ◕_◕ ༽つ";
@@ -47,9 +47,7 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
             command.AddParam("@Id", id);
            
             _connection.Open();
-
             int nbRowDeleted = command.ExecuteNonQuery();
-
             _connection.Close();
 
             return nbRowDeleted == 1;
@@ -61,7 +59,6 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
             IDbCommand command = _connection.CreateQueryCommand(cmd);
 
             _connection.Open();
-
             using (IDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
@@ -78,11 +75,11 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
             string cmd = "SELECT * FROM [Member] WHERE [Member_Id] = @id";
             IDbCommand command = _connection.CreateQueryCommand(cmd);
             command.AddParam("@id", id);
-          
 
             int cpt = 0;
-            _connection.Open();
             Member? member = null;
+
+            _connection.Open();
             using (IDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
@@ -92,6 +89,7 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
                 }
             }
             _connection.Close();
+
             if (cpt > 1)
             {
                 throw new Exception(@"On a pas trouvé sorry ¯\_(ツ)_/¯");
@@ -104,11 +102,11 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
             string cmd = "SELECT * FROM [Member] WHERE [Pseudo] = @pseudo";
             IDbCommand command = _connection.CreateQueryCommand(cmd);
             command.AddParam("@pseudo", pseudo);
-         
 
             int cpt = 0;
-            _connection.Open();
             Member? member = null;
+
+            _connection.Open();
             using (IDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
@@ -118,17 +116,17 @@ namespace Demo_ASP_MVC_06_Session.DAL.Repositories
                 }
             }
             _connection.Close();
+
             if (cpt > 1)
             {
                 throw new Exception(@"On a pas trouvé sorry ¯\_(ツ)_/¯");
             }
             return member;
         }
+
         public override bool Update(int id, Member entity)
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

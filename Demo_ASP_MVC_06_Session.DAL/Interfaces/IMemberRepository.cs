@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo_ASP_MVC_06_Session.DAL.Interfaces
 {
-    public interface IMember : IRepositoryBase<int, Member>
+    public interface IMemberRepository : IRepositoryBase<int, Member>
     {
         Member? GetByPseudo(string pseudo);
     }
